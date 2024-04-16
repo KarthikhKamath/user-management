@@ -20,12 +20,22 @@ const App: React.FC = () => {
         setCustomers(users);
     }, []);
 
+    useEffect(() => {
+        setSelectedCustomer(customers[1]);
+    }, [customers]);
+
+    useEffect(() => {
+        const body = document.body;
+        if (isCustomerListVisible) {
+            body.classList.add('no-scroll');
+        } else {
+            body.classList.remove('no-scroll');
+        }
+    }, [isCustomerListVisible]);
+
     const handleSelectCustomer = (customer: Customer) => {
         setSelectedCustomer(customer);
     };
-    useEffect(()=>{
-        setSelectedCustomer(customers[1])
-    },[customers])
 
     const handleToggleCustomerList = () => {
         setIsCustomerListVisible(!isCustomerListVisible);
@@ -34,15 +44,15 @@ const App: React.FC = () => {
     return (
         <div className="app-container">
             <button className="toggle-button" onClick={handleToggleCustomerList}>
-               {isCustomerListVisible?'Hide':'Show'} 
+                {isCustomerListVisible ? 'Hide' : 'Show'}
             </button>
             {isCustomerListVisible && (
-                <div className='customer-list'>
-                <CustomerList
-                    customers={customers}
-                    onSelectCustomer={handleSelectCustomer}
-                    selectedCustomerId={selectedCustomer?.id}
-                />
+                <div className="customer-list">
+                    <CustomerList
+                        customers={customers}
+                        onSelectCustomer={handleSelectCustomer}
+                        selectedCustomerId={selectedCustomer?.id}
+                    />
                 </div>
             )}
             <div className={isCustomerListVisible ? "details-with-sidebar" : "details-full-width"}>
